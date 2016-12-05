@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Application-Name: CutImage multi-threaded
+Application-Version: v1.0 @noga $2016
+Application-Description: Supported jpg, jpeg, png, bmp, gif
+Main-Class: local.pack.boot.CutImage
