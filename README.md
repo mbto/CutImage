@@ -1,4 +1,4 @@
-# CutImage
+# CutImage v1.0 multi-threaded
 Tool for cut images jpg, jpeg, png, bmp, gif
 
 ### Usage:
