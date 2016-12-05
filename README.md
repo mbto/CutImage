@@ -3,6 +3,7 @@ Tool for cut images jpg, jpeg, png, bmp, gif
 
 ### Usage:
 ```
+java -jar CutImage.jar path_to_picture countOfPicturesOnAxisX countOfPicturesOnAxisY
 C:\temp>java -jar CutImage.jar zubrowka.jpg 6 3
 	or
 C:\temp>java -jar C:\temp\CutImage.jar C:\temp\zubrowka.jpg 6 3
