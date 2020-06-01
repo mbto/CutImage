@@ -2,7 +2,7 @@
 Tool for cut images jpg, jpeg, png, bmp, gif
 
 ### Usage:
-* `java -jar CutImage.jar [path to picture] [count of pictures on axis X] [count of pictures on axis Y]`
+* `java -jar CutImage.jar [path to picture] [number of pictures horizontally] [number of pictures vertically]`
 
 ### Example:
 ```
