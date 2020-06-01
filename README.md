@@ -1,9 +1,9 @@
-# CutImage v1.0 multi-threaded
+### CutImage v1.0
 Tool for cut images jpg, jpeg, png, bmp, gif
 
 ### Usage:
+* `java -jar CutImage.jar [path to picture] [count of pictures on axis X] [count of pictures on axis Y]`
 ```
-java -jar CutImage.jar path_to_picture countOfPicturesOnAxisX countOfPicturesOnAxisY
 C:\temp>java -jar CutImage.jar zubrowka.jpg 6 3
 	or
 C:\temp>java -jar C:\temp\CutImage.jar C:\temp\zubrowka.jpg 6 3
@@ -22,4 +22,4 @@ Complete: 0m 0s
 ```
 
 ### Example:
-![Example](http://s017.radikal.ru/i412/1612/5f/df9d23c20c65.png)
+![](https://user-images.githubusercontent.com/8545291/83451567-e0e25880-a45f-11ea-996b-2c04f5d30fd2.png)
