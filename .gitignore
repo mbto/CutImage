@@ -1,10 +1,7 @@
-hs_err_pid*
-.idea/
-*.iml
-*.png
-*.jpg
-*.gif
-*.wav
-*.bmp
+.idea
+.gradle
+build
+out
+build/
 out/
-
+*.iml
