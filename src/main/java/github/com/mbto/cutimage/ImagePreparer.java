@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static java.util.concurrent.ForkJoinPool.commonPool;
 
@@ -44,14 +46,23 @@ public class ImagePreparer implements Runnable {
         int newWidth = (int) ((float) width / axisX);
         int newHeight = (int) ((float) height / axisY);
         if (newWidth < 1 || newHeight < 1) {
-            System.out.println(imagePath.toAbsolutePath() + " New width (" + newWidth + ") "
+            stats.getErrors().incrementAndGet();
+
+            System.err.println(imagePath.toAbsolutePath() + " New width (" + newWidth + ") "
                     + "and height (" + newHeight + ") can't be < 1. Size: " + width + "x" + height);
+
             return;
         }
 
         String cropInfo = newWidth + "x" + newHeight + " (" + (axisX + "x" + axisY) + ")";
 
-        Path imagesOutputDirectory = outputDirPath.resolve(filename + " " + cropInfo + " " + settings.getOperationDateTime());
+        Path imagesOutputDirectory = outputDirPath.resolve(filename
+                + " " + cropInfo
+                + " " + settings.getOutputDirectoryPostfix()
+                + " " + new UUID(ThreadLocalRandom.current().nextLong(),
+                            ThreadLocalRandom.current().nextLong()
+                        ).toString().substring(0, 6)
+        );
         try {
             Files.createDirectory(imagesOutputDirectory);
         } catch (Throwable e) {
@@ -62,8 +73,10 @@ public class ImagePreparer implements Runnable {
         }
 
         int total = axisX * axisY;
-        System.out.println(imagePath.toAbsolutePath() + " " + width + "x" + height + " -> "
-                + cropInfo + " '" + imagesOutputDirectory + "/' " + total + " pictures");
+        System.out.println("'" + settings.getSourceDirPath().relativize(imagePath) + "'"
+                + " " + width + "x" + height + " -> "
+                + cropInfo
+                + " '" + outputDirPath.relativize(imagesOutputDirectory) + "' " + total + "pictures");
 
         for (int picNum = 0, y = 0; y < axisY; y++) {
             for (int x = 0; x < axisX; x++) {

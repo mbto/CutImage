@@ -14,11 +14,11 @@ public class Cutter implements Runnable {
     private final int y;
     private final int newWidth;
     private final int newHeight;
-    private final int picNum;
+    private final int pictureNumber;
 
     public Cutter(Stats stats, Path imagesOutputDirectory,
                   BufferedImage sourceImage, String filename, String extension,
-                  int x, int y, int newWidth, int newHeight, int picNum) {
+                  int x, int y, int newWidth, int newHeight, int pictureNumber) {
         this.stats = stats;
         this.imagesOutputDirectory = imagesOutputDirectory;
         this.sourceImage = sourceImage;
@@ -28,15 +28,15 @@ public class Cutter implements Runnable {
         this.y = y;
         this.newWidth = newWidth;
         this.newHeight = newHeight;
-        this.picNum = picNum;
+        this.pictureNumber = pictureNumber;
     }
 
     @Override
     public void run() {
         BufferedImage newImage = sourceImage.getSubimage(x * newWidth, y * newHeight, newWidth, newHeight);
 
-        String picId = String.format("%03d;%03d;%03d", picNum, x + 1, y + 1);
-        Path newImagePath = imagesOutputDirectory.resolve(filename + ";" + picId + "." + extension);
+        String pictureParams = String.format("%03d;%03d;%03d", pictureNumber, x + 1, y + 1);
+        Path newImagePath = imagesOutputDirectory.resolve(filename + ";" + pictureParams + "." + extension);
 
         try {
             ImageIO.write(newImage, extension, newImagePath.toFile());

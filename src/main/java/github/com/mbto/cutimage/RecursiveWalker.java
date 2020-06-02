@@ -41,7 +41,7 @@ public class RecursiveWalker extends RecursiveAction {
 
                     String extension = filename.substring(dot + 1).toLowerCase();
 
-                    if (!settings.getFilterExtensions().contains(extension)) {
+                    if (!settings.getFilteredExtensions().contains(extension)) {
                         return FileVisitResult.CONTINUE;
                     }
 
@@ -53,28 +53,27 @@ public class RecursiveWalker extends RecursiveAction {
 
                 @Override
                 public FileVisitResult preVisitDirectory(Path dirPath, BasicFileAttributes attrs) throws IOException {
-                    if (!dirPath.equals(RecursiveWalker.this.nextDirectoryPath)) {
+                    if (dirPath.equals(RecursiveWalker.this.nextDirectoryPath)) {
+                        stats.getDirectories().incrementAndGet();
+
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    if(settings.isRecursiveSourceDirEnabled()) {
                         RecursiveWalker recursiveWalker = new RecursiveWalker(settings, dirPath, stats);
                         recursiveWalker.fork();
 
                         internalWalks.add(recursiveWalker);
-
-                        return FileVisitResult.SKIP_SUBTREE;
-                    } else {
-                        if(!settings.isRecursiveSourceDirEnabled()) {
-                            return FileVisitResult.SKIP_SUBTREE;
-                        }
-
-                        stats.getDirectories().incrementAndGet();
-                        return FileVisitResult.CONTINUE;
                     }
+
+                    return FileVisitResult.SKIP_SUBTREE;
                 }
 
                 @Override
                 public FileVisitResult visitFileFailed(Path filePath, IOException exc) throws IOException {
                     stats.getErrors().incrementAndGet();
 
-                    System.out.println("Failed visit '" + filePath.toAbsolutePath() + "'");
+                    System.err.println("Failed visit '" + filePath.toAbsolutePath() + "'");
 
                     return FileVisitResult.CONTINUE;
                 }
@@ -85,8 +84,10 @@ public class RecursiveWalker extends RecursiveAction {
             e.printStackTrace();
         }
 
-        for (RecursiveWalker internalWalk : internalWalks) {
-            internalWalk.join();
+        if(!internalWalks.isEmpty()) {
+            for (RecursiveWalker internalWalk : internalWalks) {
+                internalWalk.join();
+            }
         }
     }
 }
