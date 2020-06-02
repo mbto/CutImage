@@ -1,5 +1,8 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
 
+group = "CutImage"
+version = "2.0"
+
 plugins {
     java
     application
@@ -27,7 +30,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "github.com.mbto.cutimage.App"
+    mainClassName = "github.com.mbto.cutimage.Runner"
 
     configure<JavaPluginConvention> {
         sourceCompatibility = VERSION_1_8
