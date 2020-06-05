@@ -33,11 +33,11 @@ public class Settings {
 
     @Parameter(names = "-x", description = "Count of pictures on axis X",
             required = true, validateWith = PositiveInteger.class, order = 3)
-    private int axisX;
+    private int axisX = 6;
 
     @Parameter(names = "-y", description = "Count of pictures on axis Y",
             required = true, validateWith = PositiveInteger.class, order = 4)
-    private int axisY;
+    private int axisY = 3;
 
     @Parameter(names = "-t", description = "Timeout of operations in minutes",
             validateWith = PositiveInteger.class, order = 5)

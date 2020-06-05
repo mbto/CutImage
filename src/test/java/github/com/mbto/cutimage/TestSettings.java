@@ -1,17 +1,25 @@
 package github.com.mbto.cutimage;
 
-import lombok.Getter;
+import java.nio.file.Path;
+import java.util.Optional;
 
-@Getter
 public class TestSettings {
-    private final String sourceDirPathString;
-    private final String targetDirPathString;
+    private final Path sourceDirPathString;
+    private final Path targetDirPathString;
 
-    public TestSettings(String sourceDirPathString, String targetDirPathString) {
+    public TestSettings(Path sourceDirPathString, Path targetDirPathString) {
         this.sourceDirPathString = sourceDirPathString;
         this.targetDirPathString = targetDirPathString;
 
         System.out.println("sourceDirPathString=" + sourceDirPathString);
         System.out.println("targetDirPathString=" + targetDirPathString);
+    }
+
+    public String getSourceDirPathString() {
+        return Optional.ofNullable(sourceDirPathString).map(Path::toString).orElse("");
+    }
+
+    public String getTargetDirPathString() {
+        return Optional.ofNullable(targetDirPathString).map(Path::toString).orElse("");
     }
 }

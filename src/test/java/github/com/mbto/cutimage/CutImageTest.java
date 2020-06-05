@@ -3,6 +3,7 @@ package github.com.mbto.cutimage;
 import com.beust.jcommander.JCommander;
 import org.junit.Test;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -13,9 +14,13 @@ public class CutImageTest {
         /* RAMDisk */
         Path sourceDirPath = Paths.get("R:\\source");
         Path targetDirPath = Paths.get("R:\\output");
-//      Path sourceDirPath = Paths.get("build", "resources", "test", "images").toAbsolutePath();
 
-        return new TestSettings(sourceDirPath.toString(), targetDirPath.toString());
+        if(!Files.exists(sourceDirPath)) {
+            sourceDirPath = Paths.get("build", "resources", "test", "images").toAbsolutePath();
+            targetDirPath = Paths.get("build", "fromTest").toAbsolutePath();
+        }
+
+        return new TestSettings(sourceDirPath, targetDirPath);
     }
 
     @Test
