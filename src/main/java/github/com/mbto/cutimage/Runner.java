@@ -19,7 +19,9 @@ public class Runner {
         System.out.println("Available processors: " + Runtime.getRuntime().availableProcessors() + "\n");
 
         Settings settings = new Settings();
-        JCommander jCommander = JCommander.newBuilder().addObject(settings).build();
+        JCommander jCommander = JCommander.newBuilder()
+                .programName("CutImage")
+                .addObject(settings).build();
         try {
             jCommander.parse(args);
         } catch (Exception e) {
@@ -48,7 +50,8 @@ public class Runner {
 
         Path outputDirPath = settings.getOutputDirPath()
                 .resolve("Cutted Images")
-                .resolve(outputDirectoryPostfix + " " + randomUUID().toString().substring(0, 6));
+                .resolve(outputDirectoryPostfix + " " + randomUUID().toString().substring(0, 6))
+                .toAbsolutePath();
 
         settings.setResolvedOutputDirPath(outputDirPath);
 

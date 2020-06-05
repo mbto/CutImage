@@ -32,6 +32,7 @@ public class ImagePreparer implements Runnable {
         } catch (Throwable e) {
             stats.getErrors().incrementAndGet();
 
+            System.err.println("Exception at '" + imagePath.toAbsolutePath() + "', message: " + e.getMessage());
             e.printStackTrace();
             return;
         }
