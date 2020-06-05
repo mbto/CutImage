@@ -9,10 +9,12 @@ import static github.com.mbto.cutimage.Constants.supportedExtensions;
 
 public class ExtensionValidator implements IValueValidator<List<String>> {
     @Override
-    public void validate(String name, List<String> value) throws ParameterException {
-        if (value.stream()
-                .anyMatch(extension -> !supportedExtensions.contains(extension.toLowerCase()))) {
-            throw new ParameterException("Supported only " + supportedExtensions + " extensions");
+    public void validate(String name, List<String> values) throws ParameterException {
+        for (String extension : values) {
+            if(!supportedExtensions.contains(extension.toLowerCase())) {
+                throw new ParameterException("Extension '" + extension + "' not supported, " +
+                        "only " + supportedExtensions);
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.RecursiveAction;
 
 import static java.util.concurrent.ForkJoinPool.commonPool;
@@ -31,7 +32,8 @@ public class RecursiveWalker extends RecursiveAction {
             Files.walkFileTree(nextDirectoryPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path filePath, BasicFileAttributes attrs) throws IOException {
-                    stats.getFiles().incrementAndGet();
+                    if(!Files.isReadable(filePath))
+                        return FileVisitResult.CONTINUE;
 
                     String filename = filePath.getFileName().toString();
                     int dot = filename.lastIndexOf(".");
@@ -45,7 +47,11 @@ public class RecursiveWalker extends RecursiveAction {
                         return FileVisitResult.CONTINUE;
                     }
 
-                    stats.getImages().incrementAndGet();
+                    Map<String, Integer> images = stats.getImages();
+                    synchronized (images) {
+                        Integer extensionsCount = images.getOrDefault(extension, 0);
+                        images.put(extension, ++extensionsCount);
+                    }
 
                     commonPool().submit(new ImagePreparer(settings, filePath, filename, extension, stats));
                     return FileVisitResult.CONTINUE;
