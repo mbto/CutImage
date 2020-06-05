@@ -1,21 +1,37 @@
 package github.com.mbto.cutimage;
 
 import lombok.Getter;
-import lombok.ToString;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
-@ToString
 public class Stats {
-    private final AtomicInteger files = getDefaultCounter();
-    private final AtomicInteger images = getDefaultCounter();
-    private final AtomicInteger directories = getDefaultCounter();
+    private final Map<String, Integer> images = new HashMap<>();
+    private final AtomicInteger directories = buildDefaultCounter();
 
-    private final AtomicInteger newImages = getDefaultCounter();
-    private final AtomicInteger errors = getDefaultCounter();
+    private final AtomicInteger newImages = buildDefaultCounter();
+    private final AtomicInteger errors = buildDefaultCounter();
 
-    private static AtomicInteger getDefaultCounter() {
+    private static AtomicInteger buildDefaultCounter() {
         return new AtomicInteger(0);
+    }
+
+    @Override
+    public String toString() {
+        synchronized (images) {
+            return "Founded " + calcImagesCount() + " images from "
+                    + directories + " directories: " + images + "\n" +
+                    "Created " + newImages + " images\n" +
+                    errors + " errors throwed";
+        }
+    }
+
+    public int calcImagesCount() {
+        synchronized (images) {
+            return images.values().stream()
+                    .mapToInt(Integer::intValue).sum();
+        }
     }
 }

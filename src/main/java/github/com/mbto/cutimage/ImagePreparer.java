@@ -38,7 +38,7 @@ public class ImagePreparer implements Runnable {
 
         int axisX = settings.getAxisX();
         int axisY = settings.getAxisY();
-        Path outputDirPath = settings.getOutputDirPath();
+        Path outputDirPath = settings.getResolvedOutputDirPath();
 
         int width = sourceImage.getWidth(null); // X
         int height = sourceImage.getHeight(null); // Y
@@ -58,7 +58,6 @@ public class ImagePreparer implements Runnable {
 
         Path imagesOutputDirectory = outputDirPath.resolve(filename
                 + " " + cropInfo
-                + " " + settings.getOutputDirectoryPostfix()
                 + " " + new UUID(ThreadLocalRandom.current().nextLong(),
                             ThreadLocalRandom.current().nextLong()
                         ).toString().substring(0, 6)
@@ -73,10 +72,12 @@ public class ImagePreparer implements Runnable {
         }
 
         int total = axisX * axisY;
-        System.out.println("'" + settings.getSourceDirPath().relativize(imagePath) + "'"
+        System.out.println(/*Thread.currentThread().getName() + " " +*/
+                "'" + settings.getSourceDirPath().relativize(imagePath) + "'"
                 + " " + width + "x" + height + " -> "
                 + cropInfo
-                + " '" + outputDirPath.relativize(imagesOutputDirectory) + "' " + total + "pictures");
+                + " '" + imagesOutputDirectory.getFileName().toString() + "'"
+                + " " + total + " pictures");
 
         for (int picNum = 0, y = 0; y < axisY; y++) {
             for (int x = 0; x < axisX; x++) {
@@ -86,5 +87,4 @@ public class ImagePreparer implements Runnable {
             }
         }
     }
-
 }

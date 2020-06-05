@@ -1,14 +1,25 @@
 package github.com.mbto.cutimage;
 
+import com.beust.jcommander.JCommander;
 import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
 
 public class CutImageTest {
+    private TestSettings buildTestSettings() {
+        /* RAMDisk */
+        Path sourceDirPath = Paths.get("R:\\source");
+        Path targetDirPath = Paths.get("R:\\output");
+//      Path sourceDirPath = Paths.get("build", "resources", "test", "images").toAbsolutePath();
+
+        return new TestSettings(sourceDirPath.toString(), targetDirPath.toString());
+    }
+
     @Test
-    public void nonRecursitveTest() throws Exception {
+    public void recursitveTest() throws Exception {
         TestSettings testSettings = buildTestSettings();
 
         String[] args = {
@@ -20,24 +31,54 @@ public class CutImageTest {
                 "-e", "jpg,jpeg,png,bmp,gif",
         };
 
-        Runner.main(args);
+        Stats stats = runApplication(args);
+        runAsserts(stats, 41, 13, 738, 0);
     }
 
-    private TestSettings buildTestSettings() {
-        Path sourceDirPath = Paths.get("build", "resources", "test", "images")
-                .toAbsolutePath();
+    @Test
+    public void recursitveJpgTest() throws Exception {
+        TestSettings testSettings = buildTestSettings();
 
-        Path targetDirPath = Optional
-                .ofNullable(System.getProperty("java.io.tmpdir"))
-                .map(dir -> Paths.get(dir).resolve(CutImageTest.class.getSimpleName()))
-                .orElseThrow(() -> new RuntimeException("Empty 'java.io.tmpdir' environment variable"));
+        String[] args = {
+                "-s", testSettings.getSourceDirPathString(),
+                "-o", testSettings.getTargetDirPathString(),
+                "-rs",
+                "-x", "6",
+                "-y", "3",
+                "-e", "jpg",
+        };
 
-        String sourDirPathString = sourceDirPath.toString();
-        String targetDirPathString = targetDirPath.toString();
+        Stats stats = runApplication(args);
+        runAsserts(stats, 39, 13, 702, 0);
+    }
 
-        System.out.println("sourDirPathString=" + sourDirPathString);
-        System.out.println("targetDirPathString=" + targetDirPathString);
+    @Test
+    public void nonRecursitveTest() throws Exception {
+        TestSettings testSettings = buildTestSettings();
 
-        return new TestSettings(sourDirPathString, targetDirPathString);
+        String[] args = {
+                "-s", testSettings.getSourceDirPathString(),
+                "-o", testSettings.getTargetDirPathString(),
+                "-x", "6",
+                "-y", "3",
+                "-e", "jpg,jpeg,png,bmp,gif",
+        };
+
+        Stats stats = runApplication(args);
+        runAsserts(stats, 6, 1, 108, 0);
+    }
+
+    private Stats runApplication(String[] args) throws Exception {
+        Settings settings = new Settings();
+        JCommander.newBuilder().addObject(settings).build().parse(args);
+
+        return new Runner().runApplication(settings);
+    }
+
+    private void runAsserts(Stats stats, int totalImages, int directories, int newImages, int errors) {
+        assertEquals(totalImages, stats.calcImagesCount());
+        assertEquals(directories, stats.getDirectories().get());
+        assertEquals(newImages, stats.getNewImages().get());
+        assertEquals(errors, stats.getErrors().get());
     }
 }
