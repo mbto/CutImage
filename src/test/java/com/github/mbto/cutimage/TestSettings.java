@@ -1,4 +1,4 @@
-package github.com.mbto.cutimage;
+package com.github.mbto.cutimage;
 
 import java.nio.file.Path;
 import java.util.Optional;

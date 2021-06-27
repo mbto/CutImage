@@ -1,4 +1,4 @@
-package github.com.mbto.cutimage;
+package com.github.mbto.cutimage;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -14,12 +14,12 @@ import java.util.concurrent.RecursiveAction;
 import static java.util.concurrent.ForkJoinPool.commonPool;
 
 public class RecursiveWalker extends RecursiveAction {
-    private final Settings settings;
+    private final Args args;
     private final Path nextDirectoryPath;
     private final Stats stats;
 
-    public RecursiveWalker(Settings settings, Path nextDirectoryPath, Stats stats) {
-        this.settings = settings;
+    public RecursiveWalker(Args args, Path nextDirectoryPath, Stats stats) {
+        this.args = args;
         this.nextDirectoryPath = nextDirectoryPath;
         this.stats = stats;
     }
@@ -43,7 +43,7 @@ public class RecursiveWalker extends RecursiveAction {
 
                     String extension = filename.substring(dot + 1).toLowerCase();
 
-                    if (!settings.getFilteredExtensions().contains(extension)) {
+                    if (!args.getFilteredExtensions().contains(extension)) {
                         return FileVisitResult.CONTINUE;
                     }
 
@@ -53,7 +53,7 @@ public class RecursiveWalker extends RecursiveAction {
                         images.put(extension, ++extensionsCount);
                     }
 
-                    commonPool().submit(new ImagePreparer(settings, filePath, filename, extension, stats));
+                    commonPool().submit(new ImagePreparer(args, filePath, filename, extension, stats));
                     return FileVisitResult.CONTINUE;
                 }
 
@@ -65,8 +65,8 @@ public class RecursiveWalker extends RecursiveAction {
                         return FileVisitResult.CONTINUE;
                     }
 
-                    if(settings.isRecursiveSourceDirEnabled()) {
-                        RecursiveWalker recursiveWalker = new RecursiveWalker(settings, dirPath, stats);
+                    if(args.isRecursiveSourceDirEnabled()) {
+                        RecursiveWalker recursiveWalker = new RecursiveWalker(args, dirPath, stats);
                         recursiveWalker.fork();
 
                         internalWalks.add(recursiveWalker);
