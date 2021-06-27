@@ -1,5 +1,5 @@
 #### Features:
-* Cuts images with extensions: jpg, jpeg, png, bmp, gif
+* Cuts images with extensions jpg,jpeg,png,bmp,gif at X,Y axis
 * Supports recursive subdirectories
 * Win/Unix distribution
 

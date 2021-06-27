@@ -1,4 +1,4 @@
-package github.com.mbto.cutimage;
+package com.github.mbto.cutimage;
 
 import lombok.Getter;
 

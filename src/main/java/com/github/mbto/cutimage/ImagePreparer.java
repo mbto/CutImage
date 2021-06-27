@@ -1,4 +1,4 @@
-package github.com.mbto.cutimage;
+package com.github.mbto.cutimage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -10,14 +10,14 @@ import java.util.concurrent.ThreadLocalRandom;
 import static java.util.concurrent.ForkJoinPool.commonPool;
 
 public class ImagePreparer implements Runnable {
-    private final Settings settings;
+    private final Args args;
     private final Path imagePath;
     private final String filename;
     private final String extension;
     private final Stats stats;
 
-    public ImagePreparer(Settings settings, Path imagePath, String filename, String extension, Stats stats) {
-        this.settings = settings;
+    public ImagePreparer(Args args, Path imagePath, String filename, String extension, Stats stats) {
+        this.args = args;
         this.imagePath = imagePath;
         this.filename = filename;
         this.extension = extension;
@@ -37,9 +37,9 @@ public class ImagePreparer implements Runnable {
             return;
         }
 
-        int axisX = settings.getAxisX();
-        int axisY = settings.getAxisY();
-        Path outputDirPath = settings.getResolvedOutputDirPath();
+        int axisX = args.getAxisX();
+        int axisY = args.getAxisY();
+        Path outputDirPath = args.getResolvedOutputDirPath();
 
         int width = sourceImage.getWidth(null); // X
         int height = sourceImage.getHeight(null); // Y
@@ -74,7 +74,7 @@ public class ImagePreparer implements Runnable {
 
         int total = axisX * axisY;
         System.out.println(/*Thread.currentThread().getName() + " " +*/
-                "'" + settings.getSourceDirPath().relativize(imagePath) + "'"
+                "'" + args.getSourceDirPath().relativize(imagePath) + "'"
                 + " " + width + "x" + height + " -> "
                 + cropInfo
                 + " '" + imagesOutputDirectory.getFileName().toString() + "'"

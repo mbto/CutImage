@@ -1,4 +1,4 @@
-package github.com.mbto.cutimage;
+package com.github.mbto.cutimage;
 
 import com.beust.jcommander.IValueValidator;
 import com.beust.jcommander.ParameterException;

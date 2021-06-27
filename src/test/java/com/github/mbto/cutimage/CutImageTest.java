@@ -1,4 +1,4 @@
-package github.com.mbto.cutimage;
+package com.github.mbto.cutimage;
 
 import com.beust.jcommander.JCommander;
 import org.junit.Test;
@@ -7,20 +7,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.github.mbto.cutimage.Constants.SOFTWARE_INFO;
 import static org.junit.Assert.assertEquals;
 
 public class CutImageTest {
-    private TestSettings buildTestSettings() {
-        /* RAMDisk */
-        Path sourceDirPath = Paths.get("R:\\source");
-        Path targetDirPath = Paths.get("R:\\output");
+    private static final Path integrationTestsPath = Paths.get("R:\\IntegrationTests");
 
-        if(!Files.exists(sourceDirPath)) {
-            sourceDirPath = Paths.get("build", "resources", "test", "images").toAbsolutePath();
-            targetDirPath = Paths.get("build", "fromTest").toAbsolutePath();
+    private TestSettings buildTestSettings() {
+        if(Files.exists(integrationTestsPath) && Files.isDirectory(integrationTestsPath)) {
+            return new TestSettings(integrationTestsPath.resolve(SOFTWARE_INFO).resolve("source"),
+                    integrationTestsPath.resolve(SOFTWARE_INFO).resolve("output"));
         }
 
-        return new TestSettings(sourceDirPath, targetDirPath);
+        return new TestSettings(Paths.get("build", "resources", "test", "images").toAbsolutePath(),
+                Paths.get("build", "fromTest").toAbsolutePath());
     }
 
     @Test
@@ -30,7 +30,7 @@ public class CutImageTest {
         String[] args = {
                 "-s", testSettings.getSourceDirPathString(),
                 "-o", testSettings.getTargetDirPathString(),
-                "-rs",
+                "-rs", "true",
                 "-x", "6",
                 "-y", "3",
                 "-e", "jpg,jpeg,png,bmp,gif",
@@ -47,7 +47,7 @@ public class CutImageTest {
         String[] args = {
                 "-s", testSettings.getSourceDirPathString(),
                 "-o", testSettings.getTargetDirPathString(),
-                "-rs",
+                "-rs", "true",
                 "-x", "6",
                 "-y", "3",
                 "-e", "jpg",
@@ -73,11 +73,11 @@ public class CutImageTest {
         runAsserts(stats, 6, 1, 108, 0);
     }
 
-    private Stats runApplication(String[] args) throws Exception {
-        Settings settings = new Settings();
-        JCommander.newBuilder().addObject(settings).build().parse(args);
+    private Stats runApplication(String[] argsRaw) throws Exception {
+        Args args = new Args();
+        JCommander.newBuilder().addObject(args).build().parse(argsRaw);
 
-        return new Runner().runApplication(settings);
+        return new Application().runApplication(args);
     }
 
     private void runAsserts(Stats stats, int totalImages, int directories, int newImages, int errors) {

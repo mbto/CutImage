@@ -1,11 +1,11 @@
-package github.com.mbto.cutimage;
+package com.github.mbto.cutimage;
 
 import com.beust.jcommander.IValueValidator;
 import com.beust.jcommander.ParameterException;
 
 import java.util.List;
 
-import static github.com.mbto.cutimage.Constants.supportedExtensions;
+import static com.github.mbto.cutimage.Constants.supportedExtensions;
 
 public class ExtensionValidator implements IValueValidator<List<String>> {
     @Override
