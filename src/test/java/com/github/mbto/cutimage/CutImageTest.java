@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.github.mbto.cutimage.Constants.SOFTWARE_INFO;
+import static com.github.mbto.cutimage.Constants.SOFTWARE_NAME;
 import static org.junit.Assert.assertEquals;
 
 public class CutImageTest {
@@ -15,8 +15,8 @@ public class CutImageTest {
 
     private TestSettings buildTestSettings() {
         if(Files.exists(integrationTestsPath) && Files.isDirectory(integrationTestsPath)) {
-            return new TestSettings(integrationTestsPath.resolve(SOFTWARE_INFO).resolve("source"),
-                    integrationTestsPath.resolve(SOFTWARE_INFO).resolve("output"));
+            return new TestSettings(integrationTestsPath.resolve(SOFTWARE_NAME).resolve("source"),
+                    integrationTestsPath.resolve(SOFTWARE_NAME).resolve("output"));
         }
 
         return new TestSettings(Paths.get("build", "resources", "test", "images").toAbsolutePath(),
@@ -30,7 +30,7 @@ public class CutImageTest {
         String[] args = {
                 "-s", testSettings.getSourceDirPathString(),
                 "-o", testSettings.getTargetDirPathString(),
-                "-rs", "true",
+                "-rs",
                 "-x", "6",
                 "-y", "3",
                 "-e", "jpg,jpeg,png,bmp,gif",
@@ -47,7 +47,7 @@ public class CutImageTest {
         String[] args = {
                 "-s", testSettings.getSourceDirPathString(),
                 "-o", testSettings.getTargetDirPathString(),
-                "-rs", "true",
+                "-rs",
                 "-x", "6",
                 "-y", "3",
                 "-e", "jpg",

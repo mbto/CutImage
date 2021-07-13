@@ -7,9 +7,9 @@ import java.util.Set;
 import static java.util.Arrays.asList;
 
 public interface Constants {
-    String SOFTWARE_INFO = "CutImage v2.0\nhttps://github.com/mbto/CutImage";
-
     String SOFTWARE_NAME = "CutImage";
+
+    String SOFTWARE_INFO = "CutImage v2.0\nhttps://github.com/mbto/" + SOFTWARE_NAME;
 
     Set<String> supportedExtensions = new LinkedHashSet<>(
             asList("jpg", "jpeg", "png", "bmp", "gif"));
