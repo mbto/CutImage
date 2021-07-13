@@ -26,7 +26,7 @@ dependencies {
     testCompile("org.projectlombok:lombok:$lombokVer");
     testAnnotationProcessor("org.projectlombok:lombok:$lombokVer");
 
-    testCompile("junit:junit:+")
+    testCompile("junit:junit:4.13.2")
 }
 
 application {
