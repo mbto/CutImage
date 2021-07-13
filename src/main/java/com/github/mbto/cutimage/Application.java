@@ -54,7 +54,7 @@ public class Application {
 
         System.out.println(args);
 
-        if (!Files.exists(outputDirPath)) {
+        if (!Files.isDirectory(outputDirPath)) {
             Files.createDirectories(outputDirPath);
         }
 
