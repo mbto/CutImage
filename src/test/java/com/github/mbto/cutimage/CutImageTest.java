@@ -30,7 +30,7 @@ public class CutImageTest {
         String[] args = {
                 "-s", testSettings.getSourceDirPathString(),
                 "-o", testSettings.getTargetDirPathString(),
-                "-rs",
+                "-rs", "true",
                 "-x", "6",
                 "-y", "3",
                 "-e", "jpg,jpeg,png,bmp,gif",
@@ -47,7 +47,7 @@ public class CutImageTest {
         String[] args = {
                 "-s", testSettings.getSourceDirPathString(),
                 "-o", testSettings.getTargetDirPathString(),
-                "-rs",
+                "-rs", "true",
                 "-x", "6",
                 "-y", "3",
                 "-e", "jpg",

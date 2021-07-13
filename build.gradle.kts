@@ -30,7 +30,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "com.github.mbto.cutimage.Runner"
+    mainClassName = "com.github.mbto.cutimage.Application"
 
     configure<JavaPluginConvention> {
         sourceCompatibility = VERSION_1_8

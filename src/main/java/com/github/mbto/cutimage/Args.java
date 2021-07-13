@@ -25,7 +25,7 @@ public class Args {
 
     private Path resolvedOutputDirPath;
 
-    @Parameter(names = "-rs", description = "Enable/disable recursive walk in source directory", order = 3)
+    @Parameter(names = "-rs", arity = 1, description = "Enable/disable recursive walk in source directory", order = 3)
     private boolean recursiveSourceDirEnabled;
 
     @Parameter(names = "-x", description = "Count of pictures on axis X",
