@@ -14,7 +14,7 @@ public class CutImageTest {
     private static final Path integrationTestsPath = Paths.get("R:\\IntegrationTests");
 
     private TestSettings buildTestSettings() {
-        if(Files.exists(integrationTestsPath) && Files.isDirectory(integrationTestsPath)) {
+        if(Files.isDirectory(integrationTestsPath)) {
             return new TestSettings(integrationTestsPath.resolve(SOFTWARE_NAME).resolve("source"),
                     integrationTestsPath.resolve(SOFTWARE_NAME).resolve("output"));
         }
